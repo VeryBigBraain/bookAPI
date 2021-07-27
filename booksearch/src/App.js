@@ -40,7 +40,6 @@ function App() {
       return filteredBooks;
     };
     const hanldeAddBooks = () => {
-      setIsLoaded(false);
       console.log(`https://www.googleapis.com/books/v1/volumes?q=${currentBook}&startIndex=${numberOfStart}&maxResults=${maxResults}&key=${keyAPI}`)
       axios.get(`https://www.googleapis.com/books/v1/volumes?q=${currentBook}&startIndex=${numberOfStart}&maxResults=${maxResults}&key=${keyAPI}`)
         .then(res => {
@@ -48,7 +47,6 @@ function App() {
           setBooks([...books, ...moreBooks]);
           setNumberOfStart(numberOfStart + maxResults);
           console.log(books);
-          setIsLoaded(true);
         });
     }
 
