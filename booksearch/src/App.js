@@ -6,39 +6,65 @@ function App() {
   const [keyAPI, setKeyAPI] = useState('AIzaSyDL6nLVdSAJ_XI4OUnKlXxuPpuaTt81bx8');
   const [maxResults, setMaxResults] = useState(20);
   const [inputVal, setInputVal] = useState('');
+  const [numberOfStart, setNumberOfStart] = useState(0);
+  const [currentBook, setCurrentBook] = useState('');
+  const [visible, setVisible] = useState('hide');
 
-  
-    const handleRequest = (e) => {
-      e.preventDefault();
-      axios.get(`https://www.googleapis.com/books/v1/volumes?q=${inputVal}&maxResults=${maxResults}&key=${keyAPI}`)
-        .then(res => {
-          const books = res.data.items;
-          setBooks(books);
-          setInputVal('');
-        });
-    }
     const handleInput = (e) => {
       const book = e.target.value;
 
       setInputVal(book);
     }
+    const handleRequest = (e) => {
+      e.preventDefault();
+      console.log(`https://www.googleapis.com/books/v1/volumes?q=${inputVal}&startIndex=${numberOfStart}&maxResults=${maxResults}&key=${keyAPI}`)
+      axios.get(`https://www.googleapis.com/books/v1/volumes?q=${inputVal}&startIndex=${numberOfStart}&maxResults=${maxResults}&key=${keyAPI}`)
+        .then(res => {
+          const newBooks = res.data.items;
+          setVisible('');
+          setBooks(newBooks);
+          setNumberOfStart(numberOfStart + maxResults);
+          setCurrentBook(inputVal);
+          setInputVal('');
+        });
+    }
+    const filterNewBooks = (moreBooks) => {
+      const filteredBooks = moreBooks.filter(newBook => {
+        const booksId =  books.map(book => book.id);
+        return !(booksId.includes(newBook.id));
+      })
+
+      return filteredBooks;
+    };
+    const hanldeAddBooks = () => {
+      console.log(`https://www.googleapis.com/books/v1/volumes?q=${currentBook}&startIndex=${numberOfStart}&maxResults=${maxResults}&key=${keyAPI}`)
+      axios.get(`https://www.googleapis.com/books/v1/volumes?q=${currentBook}&startIndex=${numberOfStart}&maxResults=${maxResults}&key=${keyAPI}`)
+        .then(res => {
+          let moreBooks = filterNewBooks(res.data.items);
+          setBooks([...books, ...moreBooks]);
+          setNumberOfStart(numberOfStart + maxResults);
+          console.log(books);
+        });
+    }
 
   try {
       return (
       <div className="wrapper">
+        <h1 className="header">Find a book:</h1>
         <div className="form-container">
-          <form className="book-form">
-            <input onChange={handleInput} type="text" className="form-input" value={inputVal} />
-            <button type="submit" onClick={handleRequest} className="form-btn"></button>
+          <form className="book-form" onSubmit={handleRequest}>
+            <input onChange={handleInput} type="text" className="form-input" value={inputVal} required />
+            <button type="submit" className="form-btn">Got it</button>
           </form>
         </div>
-            <div className="imgs-container">
+            <div className= {`imgs-container ${visible}`}>
               { books.map(book => 
-                <a key={book.id} href={book.saleInfo.buyLink} className="book" target="__blank">
+                <a key={book.id} href={book.saleInfo.buyLink || book.volumeInfo.canonicalVolumeLink} className="book" target="__blank">
                   <img src={book.volumeInfo.imageLinks.thumbnail} alt={book.title} />
                 </a>
               )}
             </div>
+            <button className={`form-btn ${visible}`} onClick={hanldeAddBooks}>More</button>
       </div>
     )
   } catch(e) {
@@ -50,7 +76,6 @@ function App() {
       </div>
     )
   }
-  
 }
 
 export default App;

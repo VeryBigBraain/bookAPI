@@ -1,13 +1,99 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background: url('./books-background.jpg');
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 60px 30px 60px;
+  align-items: center;
+}
+
+.header {
+  color: #fff;
+}
+
+.form-container {
+  width: 100%;
+}
+
+.book-form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 30px 30px;
+}
+
+.form-input {
+  width: 80%;
+  outline: none;
+  padding: 5px 13px;
+  font-family: 'Lato', sans-serif;
+  border-style: solid;
+  border-color: orangered;
+  border-radius: 20px;
+  font-size: 1.1rem;
+  height: 35px;
+  margin-right: 5px;
+}
+
+.form-btn {
+  height: 35px;
+  width: 76px;
+  padding: 5px 10px;
+  border-radius: 17px;
+  background-color: orangered;
+  border: 2px solid orangered;
+  color: #fff;
+  font-size: 1.1rem;
+  transition: all 0.5s ease 0s;
+}
+
+.form-btn:hover {
+  color: orangered;
+  background-color: #fff;
+}
+
+.book {
+  display: flex;
+  height: 180px;
+  padding: 3px 5px;
+}
+
+.book img {
+  height: 100%;
+  width: auto;
+}
+
+.imgs-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 3px solid orangered;
+  border-radius: 20px;
+}
+
+.hide {
+  display: none;
 }
